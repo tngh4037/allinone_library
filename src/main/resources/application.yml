@@ -1,0 +1,6 @@
+spring:
+  datasource: # datasource: 스프링 부트가 어떠한 데이터베이스를 가리키게 할것인가 정의
+    url: "jdbc:mysql://localhost/library"  # 데이터베이스 주소
+    username: "root"
+    password: "1234"
+    driver-class-name: com.mysql.cj.jdbc.Driver # 데이터베이스에 접근할 때 사용할 프로그램
