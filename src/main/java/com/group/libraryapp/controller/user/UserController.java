@@ -81,6 +81,12 @@ public class UserController {
     public void updateUser(
             @RequestBody UserUpdateRequest request
     ) {
+        String readSql = "SELECT * FROM user WHERE id = ?";
+        boolean isUserNotExist = jdbcTemplate.query(readSql, (rs, rowNum) -> 0,  request.getId()).isEmpty(); // (rs, rowNum) -> 0: SELECT SQL의 결과가 있으면 0으로 변환하도록 하겠다. ( 만약 조회결과가 없다면, 0 자체가 생길 일이 없고, 아무것도 담겨있지 않은 빈 리스트가 나올 것이다. )
+        if (isUserNotExist) {
+            throw new IllegalArgumentException();
+        }
+
         String sql = "UPDATE user SET name = ? WHERE id = ?";
         jdbcTemplate.update(sql, request.getName(), request.getId());
     }
@@ -89,6 +95,12 @@ public class UserController {
     public void deleteUser(
             @RequestParam String name
     ) {
+        String readSql = "SELECT * FROM user WHERE name = ?";
+        boolean isUserNotExist = jdbcTemplate.query(readSql, (rs, rowNum) -> 0, name).isEmpty();
+        if (isUserNotExist) {
+            throw new IllegalArgumentException();
+        }
+
         String sql = "DELETE FROM user WHERE name = ?";
         jdbcTemplate.update(sql, name);
     }
