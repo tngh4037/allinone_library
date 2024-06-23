@@ -4,6 +4,7 @@ import com.group.libraryapp.domain.user.User;
 import com.group.libraryapp.dto.user.request.UserCreateRequest;
 import com.group.libraryapp.dto.user.request.UserUpdateRequest;
 import com.group.libraryapp.dto.user.response.UserResponse;
+import com.group.libraryapp.service.user.UserService;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.web.bind.annotation.*;
@@ -40,10 +41,12 @@ public class UserController {
     }
     */
 
+
+
     // ============================
     // ====== Based Database ======
     // ============================
-
+    /*
     private final JdbcTemplate jdbcTemplate; // jdbcTemplate 을 이용해 SQL을 날릴 수 있다.
 
     public UserController(JdbcTemplate jdbcTemplate) {
@@ -104,5 +107,46 @@ public class UserController {
         String sql = "DELETE FROM user WHERE name = ?";
         jdbcTemplate.update(sql, name);
     }
+    */
 
+
+
+    // ============================
+    // ======== Clean Code ========
+    // = Controller 를 3단 분리하기 =
+    // ============================
+    private final JdbcTemplate jdbcTemplate;
+    private final UserService userService;
+
+    public UserController(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+        this.userService = new UserService(jdbcTemplate);
+    }
+
+    @PostMapping("/user") // POST /user
+    public void saveUser(
+            @RequestBody UserCreateRequest request
+    ) {
+        userService.saveUser(request);
+    }
+
+    @GetMapping("/user") // GET /user
+    public List<UserResponse> getUsers(
+    ) {
+        return userService.getUsers();
+    }
+
+    @PutMapping("/user")
+    public void updateUser(
+            @RequestBody UserUpdateRequest request
+    ) {
+        userService.updateUser(request);
+    }
+
+    @DeleteMapping("/user")
+    public void deleteUser(
+            @RequestParam String name
+    ) {
+        userService.deleteUser(name);
+    }
 }
