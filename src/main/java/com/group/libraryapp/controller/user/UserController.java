@@ -4,6 +4,7 @@ import com.group.libraryapp.dto.user.request.UserCreateRequest;
 import com.group.libraryapp.dto.user.request.UserUpdateRequest;
 import com.group.libraryapp.dto.user.response.UserResponse;
 import com.group.libraryapp.service.user.UserServiceV1;
+import com.group.libraryapp.service.user.UserServiceV2;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -109,37 +110,41 @@ public class UserController {
     // ======== Clean Code ========
     // = Controller 를 3단 분리하기 =
     // ============================
-    private final UserServiceV1 userServiceV1;
+    // private final UserServiceV1 userService;
+    private final UserServiceV2 userService;
 
     // @Autowired // @Autowired: 이 생성자에 있는 파라미터에 스프링 빈을 넣어줘(연결시켜줘) (생성자가 하나만 있는 경우 생략 가능)
-    public UserController(UserServiceV1 userServiceV1) {
-        this.userServiceV1 = userServiceV1;
+    public UserController(
+            // UserServiceV1 userService
+            UserServiceV2 userService
+    ) {
+        this.userService = userService;
     }
 
     @PostMapping("/user") // POST /user
     public void saveUser(
             @RequestBody UserCreateRequest request
     ) {
-        userServiceV1.saveUser(request);
+        userService.saveUser(request);
     }
 
     @GetMapping("/user") // GET /user
     public List<UserResponse> getUsers(
     ) {
-        return userServiceV1.getUsers();
+        return userService.getUsers();
     }
 
     @PutMapping("/user")
     public void updateUser(
             @RequestBody UserUpdateRequest request
     ) {
-        userServiceV1.updateUser(request);
+        userService.updateUser(request);
     }
 
     @DeleteMapping("/user")
     public void deleteUser(
             @RequestParam String name
     ) {
-        userServiceV1.deleteUser(name);
+        userService.deleteUser(name);
     }
 }
