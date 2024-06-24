@@ -115,12 +115,10 @@ public class UserController {
     // ======== Clean Code ========
     // = Controller 를 3단 분리하기 =
     // ============================
-    private final JdbcTemplate jdbcTemplate;
     private final UserService userService;
 
-    public UserController(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-        this.userService = new UserService(jdbcTemplate);
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
     @PostMapping("/user") // POST /user
