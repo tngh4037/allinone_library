@@ -5,6 +5,7 @@ import com.group.libraryapp.dto.user.request.UserCreateRequest;
 import com.group.libraryapp.dto.user.request.UserUpdateRequest;
 import com.group.libraryapp.dto.user.response.UserResponse;
 import com.group.libraryapp.service.user.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.web.bind.annotation.*;
@@ -117,6 +118,7 @@ public class UserController {
     // ============================
     private final UserService userService;
 
+    // @Autowired // @Autowired: 이 생성자에 있는 파라미터에 스프링 빈을 넣어줘(연결시켜줘) (생성자가 하나만 있는 경우 생략 가능)
     public UserController(UserService userService) {
         this.userService = userService;
     }
