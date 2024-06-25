@@ -45,4 +45,19 @@ public class User {
     public void updateName(String name) {
         this.name = name;
     }
+
+    // user 가 가지고 있는 대출 목록 리스트안에 새로운 UserLoanHistory 를 추가했다. 그러면 (cascade 옵션에 의해서) 새로운 연결관계가 맺어진 UserLoanHistory 는 트랜잭션이 종료될 때 자동으로 체크되어 등록된다.
+    public void loanBook(String bookName) {
+        this.userLoanHistories.add(new UserLoanHistory(this, bookName));
+    }
+
+    public void returnBook(String bookName) {
+        // user 가 가지고 있는 대출 목록 리스트 중에서, 파라미터로 넘어온 책 이름으로 된 대출 내역을 찾아서 반납 처리
+        UserLoanHistory targetHistory = this.userLoanHistories.stream() // 참고) lazy loading
+                .filter(history -> history.getBookName().equals(bookName)) // filter: 객체들 중에 조건을 충족하는 것만 필터링 한다.
+                .findFirst() // 첫 번째로 해당하는 UserLoanHistory 를 찾는다. (Optional 로 반환)
+                .orElseThrow(IllegalArgumentException::new); // Optional 을 제거하기 위해 없으면 예외를 던진다.
+
+        targetHistory.doReturn(); // 그렇게 찾은 UserLoanHistory 를 반납처리 한다.
+    }
 }

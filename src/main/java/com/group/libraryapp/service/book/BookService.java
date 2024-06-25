@@ -52,7 +52,9 @@ public class BookService {
                 .orElseThrow(IllegalArgumentException::new);
 
         // 5. 유저 정보와 책 정보를 기반으로 UserLoanHistory 에 저장
-        userLoanHistoryRepository.save(new UserLoanHistory(user, book.getName()));
+        // userLoanHistoryRepository.save(new UserLoanHistory(user, book.getName()));
+
+        user.loanBook(book.getName()); // refactoring ( 대출이라는 기능에 있어서, User 와 UserLoanHistory 객체가 서로 직접 협력하도록 )
     }
 
     @Transactional
@@ -62,10 +64,12 @@ public class BookService {
                 .orElseThrow(IllegalArgumentException::new);
 
         // 2. 유저 정보와 반납하려는 책 이름으로, 대출 기록을 조회한다.
-        UserLoanHistory userLoanHistory = userLoanHistoryRepository.findByUserIdAndBookName(user.getId(), request.getBookName())
-                .orElseThrow(IllegalArgumentException::new);
-
+        // UserLoanHistory userLoanHistory = userLoanHistoryRepository.findByUserIdAndBookName(user.getId(), request.getBookName())
+        //         .orElseThrow(IllegalArgumentException::new);
         // 3. 반납 처리
-        userLoanHistory.doReturn();
+        // userLoanHistory.doReturn();
+
+        System.out.println("Hello");
+        user.returnBook(request.getBookName()); // refactoring ( 반납이라는 기능에 있어서, User 와 UserLoanHistory 객체가 서로 직접 협력하도록 )
     }
 }
