@@ -1,6 +1,7 @@
 package com.group.libraryapp.domain.user.loanhistory;
 
 import javax.persistence.*;
+import java.awt.print.Pageable;
 
 @Entity
 public class UserLoanHistory {
@@ -21,5 +22,9 @@ public class UserLoanHistory {
         this.userId = userId;
         this.bookName = bookName;
         this.isReturn = false;
+    }
+
+    public void doReturn() {
+        this.isReturn = true;
     }
 }
