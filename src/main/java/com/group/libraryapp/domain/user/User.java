@@ -17,7 +17,7 @@ public class User {
 
     private Integer age; // age int // DB 테이블의 컬럼과 완전히 같기 때문에, 이런 경우는 @Column 을 생략할 수 있다.
 
-    @OneToMany(mappedBy = "user") // 참고) 연관관계의 주인이 아닌 쪽에 mappedBy 옵션을 달아 주어야 한다.
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true) // 참고) 연관관계의 주인이 아닌 쪽에 mappedBy 옵션을 달아 주어야 한다.
     private List<UserLoanHistory> userLoanHistories = new ArrayList<>();
 
     protected User() {}
