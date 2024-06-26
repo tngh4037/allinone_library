@@ -1,10 +1,35 @@
 spring:
+  config:
+    activate:
+      on-profile: local
+  datasource:
+    url: "jdbc:h2:mem:library;MODE=MYSQL;NON_KEYWORDS=USER" # MODE=MYSQL: MYSQL 처럼 사용할 것임을 명시 | NON_KEYWORDS=USER : MYSQL을 기본적으로 실행하게 되면 "USER" 는 예약된 키워드이다. 따라서 USER 테이블을 만들 수 없다. 그래서 NON_KEYWORDS=USER 를 통해 USER 라는건 키워드가 아니야라고 알려주도록 명시
+    username: "sa"
+    password:
+    driver-class-name: org.h2.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+        dialect: org.hibernate.dialect.H2Dialect
+  h2:
+    console:
+      enabled: true # H2 web console을 활성화한다 ( h2 console 에 접속할 수 있도록 하겠다. )
+      path: /h2-console # 활성화된 H2 web console 의 주소를 의미한다.
+
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
   datasource: # datasource: 스프링 부트가 어떠한 데이터베이스를 가리키게 할것인가 정의
     url: "jdbc:mysql://localhost/library"  # 데이터베이스 주소
     username: "root"
     password: "1234"
     driver-class-name: com.mysql.cj.jdbc.Driver # 데이터베이스에 접근할 때 사용할 프로그램
-
   jpa:
     hibernate:
       ddl-auto: none
