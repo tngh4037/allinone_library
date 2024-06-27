@@ -1,12 +1,15 @@
 package com.group.libraryapp.domain.user;
 
 import com.group.libraryapp.domain.user.loanhistory.UserLoanHistory;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,8 +22,6 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true) // 참고) 연관관계의 주인이 아닌 쪽에 mappedBy 옵션을 달아 주어야 한다.
     private List<UserLoanHistory> userLoanHistories = new ArrayList<>();
-
-    protected User() {}
 
     public User(String name, Integer age) {
         if (name == null || name.isBlank()) {
