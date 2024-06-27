@@ -19,6 +19,11 @@ spring:
     console:
       enabled: true # H2 web console을 활성화한다 ( h2 console 에 접속할 수 있도록 하겠다. )
       path: /h2-console # 활성화된 H2 web console 의 주소를 의미한다.
+#  web:
+#    resources:
+#      static-locations: file:C:/ # locations of static resources
+#  mvc:
+#    static-path-pattern: /static-content/** # http://localhost:8080/hello.txt (X) | http://localhost:8080/static-content/hello.txt (O)
 
 ---
 spring:
