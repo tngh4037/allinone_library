@@ -3,13 +3,17 @@ package com.group.libraryapp.service.fruit;
 import com.group.libraryapp.domain.fruit.Fruit;
 import com.group.libraryapp.repository.fruit.FruitRepository;
 import com.group.libraryapp.service.fruit.request.FruitCreateServiceRequest;
+import com.group.libraryapp.service.fruit.response.FruitCountResponse;
+import com.group.libraryapp.service.fruit.response.FruitResponse;
 import com.group.libraryapp.service.fruit.response.FruitStatResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -51,5 +55,23 @@ public class FruitService {
                 .orElseThrow(IllegalArgumentException::new);
 
         fruit.order();
+    }
+
+    public FruitCountResponse getFruitCount(String name) {
+        long count = fruitRepository.countByName(name);
+        return FruitCountResponse.builder().count(count).build();
+    }
+
+    public List<FruitResponse> getFruitList(String option, long price) {
+        List<Fruit> fruits = new ArrayList<>();
+        if ("GTE".equals(option)) {
+            fruits = fruitRepository.findAllByPriceGreaterThanEqualAndSoldYn(price, "N");
+        } else if ("LTE".equals(option)) {
+            fruits = fruitRepository.findAllByPriceLessThanEqualAndSoldYn(price, "N");
+        }
+
+        return fruits.stream()
+                .map(FruitResponse::of)
+                .collect(Collectors.toList());
     }
 }

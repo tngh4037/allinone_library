@@ -15,11 +15,11 @@ public class Fruit {
 
     private String name;
     private LocalDate warehousingDate;
-    private Long price;
+    private long price;
     private String soldYn;
 
     @Builder
-    private Fruit(String name, LocalDate warehousingDate, Long price, String soldYn) {
+    private Fruit(String name, LocalDate warehousingDate, long price, String soldYn) {
         this.name = name;
         this.warehousingDate = warehousingDate;
         this.price = price;
